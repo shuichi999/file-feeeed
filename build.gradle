@@ -13,6 +13,9 @@ buildscript {
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'spring-boot'
+apply plugin: 'application'
+mainClassName = 'com.fileeeeed.FileFeeeedApplication'
+project.ext.assetsDir = new File("./assets")
 
 jar {
 	baseName = 'file-feeeed'
@@ -33,8 +36,6 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
 	runtime('com.h2database:h2')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
-    // https://mvnrepository.com/artifact/com.jcraft/jsch
-	compile('com.jcraft:jsch')
 }
 
 
@@ -46,4 +47,14 @@ eclipse {
 }
 task wrapper(type: Wrapper) {
 	gradleVersion = '3.0'
+}
+
+task debug(dependsOn: classes, type: JavaExec) {
+	main = project.mainClassName
+	classpath = sourceSets.main.runtimeClasspath
+	standardInput = System.in
+	workingDir = project.assetsDir
+	ignoreExitValue = true
+	debug = true
+//	systemProperty "java.library.path", "C:\\Users\\shuichi.tsukamoto\\Documents\\bin\\Jaybird-2.2.10-JDK_1.8"
 }
